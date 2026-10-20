@@ -3,30 +3,42 @@
 Works standalone; designed to run in a GitHub Action daily to stay live.
 Usage: python generate_streak_svg.py [username] [output.svg]
 """
-import sys, json, os, datetime, urllib.request
+import sys
+import json
+import datetime
+from pathlib import Path
+import xml.etree.ElementTree as ET
 
-USER = sys.argv[1] if len(sys.argv) > 1 else "AVIVASHISHTA29"
-OUT  = sys.argv[2] if len(sys.argv) > 2 else "streak.svg"
+USER = sys.argv[1] if len(sys.argv) > 1 else "mikeperrella"
+OUT = Path(sys.argv[2]) if len(sys.argv) > 2 else Path(__file__).resolve().parent.parent / "contrib-heatmap.svg"
+SNAPSHOT = Path(__file__).resolve().parent.parent / "data" / "contributions.json"
+
 
 def get_data(user):
-    # prefer the snapshot fetch_contributions.py just scraped from github itself,
-    # so this graph and stats.svg always agree on the numbers
-    snap = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "contributions.json")
-    if os.path.exists(snap):
-        d = json.load(open(snap))
-        if d.get("username", "").lower() == user.lower() and all("level" in x for x in d["days"]):
-            return {"contributions": d["days"], "total": {"lastYear": d["total_contributions"]}}
-    url = f"https://github-contributions-api.jogruber.de/v4/{user}?y=last"
-    try:
-        with urllib.request.urlopen(url, timeout=25) as r:
-            return json.loads(r.read().decode())
-    except Exception as e:
-        # fallback to a local snapshot if the API is unreachable
-        here = os.path.join(os.path.dirname(os.path.abspath(__file__)), "contrib.json")
-        if os.path.exists(here):
-            print("API failed (%s); using local contrib.json" % e)
-            return json.load(open(here))
-        raise
+    # Fail closed rather than silently displaying another user's/stale fixture data.
+    if not SNAPSHOT.is_file():
+        raise FileNotFoundError(f"Missing {SNAPSHOT}. Run fetch_contributions.py first.")
+    with SNAPSHOT.open(encoding="utf-8") as fh:
+        snap = json.load(fh)
+    if snap.get("username", "").lower() != user.lower():
+        raise ValueError("Snapshot username does not match the requested account")
+    days = snap.get("days", [])
+    if not days:
+        raise ValueError("Contribution snapshot has no days")
+    dates = [datetime.date.fromisoformat(item["date"]) for item in days]
+    if len(dates) != len(set(dates)) or dates != sorted(dates):
+        raise ValueError("Snapshot dates are duplicated or out of order")
+    if any((b-a).days != 1 for a,b in zip(dates, dates[1:])):
+        raise ValueError("Snapshot is missing dates")
+    if any(not isinstance(d.get("count"), int) or d["count"] < 0
+           or not isinstance(d.get("level"), int) or d["level"] not in range(5)
+           for d in days):
+        raise ValueError("Snapshot contains invalid contribution counts or levels")
+    real_total = sum(day["count"] for day in days)
+    if real_total != snap.get("total_contributions"):
+        raise ValueError("Snapshot daily total disagrees with reported total")
+    return {"contributions": days, "total": {"lastYear": real_total}}
+
 
 data = get_data(USER)
 contribs = data["contributions"]
@@ -85,5 +97,6 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewB
 <text class="total" x="{LEFT}" y="{H-6}">{total:,} contributions in the last year</text>
 </svg>'''
 
-open(OUT, "w").write(svg)
+OUT.write_text(svg, encoding="utf-8")
+ET.fromstring(svg)
 print(f"Wrote {OUT}: {n} days, {total:,} contributions, {len(svg)//1024} KB")

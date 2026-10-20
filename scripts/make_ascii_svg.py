@@ -21,7 +21,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # defaults to the prepped grayscale image (see prep_photo.py), which already has
 # the background removed + local contrast applied.
 SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "source-prepped.png")
-OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, "..", "avi-ascii.svg")
+OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, "..", "mike-ascii.svg")
 
 # more columns = more detail (eyes need ~6+ chars across to read). the art
 # stays ART_W px wide either way; cells shrink, keeping a ~1:1.875 char aspect.

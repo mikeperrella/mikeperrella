@@ -1,0 +1,36 @@
+MIKE'S GITHUB PROFILE — HOW TO USE THESE UPDATED FILES
+
+1. Extract this ZIP. Open the included "mikeperrella" folder.
+2. In File Explorer, open your existing project at:
+   C:\Users\miker\OneDrive\Documents\Custom Office Templates\mikeperrella
+   Copy the FILES AND FOLDERS INSIDE the extracted "mikeperrella" folder into
+   your existing project folder. Accept "Replace" when Windows asks.
+   Keep your existing .git, .venv, and local source-photo files untouched.
+3. Open the existing project folder in Cursor. Open Terminal and run:
+
+   .\.venv\Scripts\python.exe -m unittest discover -s tests -v
+   git status
+
+   You should see the profile files updated. Preview README.md in Cursor,
+   and open stats.svg or contrib-heatmap.svg in Chrome.
+
+4. If it looks right, run in the Cursor terminal:
+
+   git add README.md .gitignore scripts/fetch_contributions.py scripts/generate_streak_svg.py scripts/make_ascii_svg.py scripts/render_stats_svg.py stats.svg contrib-heatmap.svg mike-ascii.svg data/contributions.json .github/workflows/update-profile-art.yml tests PRIVATE_CONTRIBUTIONS_CHECK.md
+   git diff --cached --stat
+   git commit -m "Polish animated GitHub security portfolio"
+   git push origin main
+
+OPTIONAL CLEANUP:
+The old scripts/contrib.json is a stale sample containing another contribution
+count (9365). The UPDATED generate_streak_svg.py will NEVER use it. You can
+remove the old scripts/contrib.json if you want to reduce confusion.
+
+PRIVATE CONTRIBUTIONS:
+This project's uploaded snapshot reports 257 in the last-year calendar.
+GitHub's publicly visible endpoint also reported 257 on 2026-10-20.
+That does not prove every private commit is eligible or counted.
+See PRIVATE_CONTRIBUTIONS_CHECK.md for a short, safe GitHub attribution check.
+
+This ZIP intentionally does NOT include your .git history, .venv environment,
+private photo PNGs, personal resume, Windows desktop.ini, or the old fixture.

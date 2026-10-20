@@ -37,17 +37,17 @@ SECTION_STAGGER = 0.14
 FOOTER_LEAD = 0.18
 
 NAME = "Mike Perrella"
-FOCUS = "Cybersecurity / GRC / AI Engineering"
+FOCUS = "Cybersecurity / GRC / AI Security"
 PROMPT = "mike@github:~$ ./system-info.sh"
 FOOTER = "SECURITY × AI × AUTOMATION"
 
 SECTIONS = [
-    ("SPECIALIZATION", "Governance, Risk & Compliance"),
-    ("SECURITY FRAMEWORKS", "SOC 2 · NIST CSF · NIST 800-53"),
-    ("SECURITY ENGINEERING", "IAM · Detection Engineering · Python"),
-    ("AI & AUTOMATION", "Local AI · Agentic Systems · Security Automation"),
-    ("CURRENT BUILDS", "GRC Second Brain · Agent Skill Inspector"),
-    ("FOUNDER", "BizAI Solutions"),
+    ("CREDENTIALS", "B.S. CIS (Cybersecurity) · Security+"),
+    ("GRC & COMPLIANCE", "SOC 2 · NIST CSF 2.0 · ISO 27001"),
+    ("SECURITY ENGINEERING", "IAM · Detection · STRIDE"),
+    ("AI & AUTOMATION", "Python · LangGraph · Local LLMs"),
+    ("FEATURED PROJECTS", "ALIBI · VIGCAP · Aegis · ARGUS"),
+    ("BACKGROUND", "BizAI · IFF · Covington & Burling"),
 ]
 
 
@@ -151,15 +151,9 @@ def main() -> None:
 
     # ---- footer ----------------------------------------------------------
     parts.append(f'<g class="panel" style="animation-delay:{footer_delay:.2f}s">')
-    footer_bits = [bit.strip() for bit in FOOTER.split("×")]
-    footer_tsp = []
-    for i, bit in enumerate(footer_bits):
-        if i:
-            footer_tsp.append(f'<tspan fill="{GREEN}"> × </tspan>')
-        footer_tsp.append(f'<tspan fill="{MUTED}">{xml_escape(bit)}</tspan>')
     parts.append(
-        f'<text x="{W / 2}" y="{footer_y}" font-size="16" text-anchor="middle" '
-        f'letter-spacing="2.4">{"".join(footer_tsp)}</text>'
+        f'<text x="{W / 2}" y="{footer_y}" fill="{MUTED}" font-size="16" '
+        f'text-anchor="middle" letter-spacing="2">{xml_escape(FOOTER)}</text>'
     )
     parts.append("</g>")
     parts.append("</svg>")

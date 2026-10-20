@@ -4,3 +4,8 @@ __pycache__/
 .env
 source-photo.png
 source-prepped.png
+# Windows metadata
+desktop.ini
+
+# Local diagnostic files
+contribution-changes.patch

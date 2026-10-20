@@ -2,8 +2,9 @@
 """
 Scrape real daily contribution counts from GitHub's public, unauthenticated
 contributions endpoint (the same fragment the profile page itself uses) and
-write data/contributions.json with the raw days plus derived stats
-(current streak, longest streak, best day, monthly totals).
+write data/contributions.json with raw daily counts and derived metadata.
+The animated README contribution graph uses this snapshot; the personal profile
+information card is intentionally independent of contribution statistics.
 
 No token, no auth, no GraphQL -- just the public HTML GitHub already serves.
 Run daily by .github/workflows/update-profile-art.yml.
@@ -39,15 +40,24 @@ def fetch_days():
             continue
         td_id = td.get("id")
         tooltip_el = soup.find("tool-tip", attrs={"for": td_id}) if td_id else None
-        text = tooltip_el.get_text(strip=True) if tooltip_el else ""
-        if re.search(r"no contributions", text, re.I):
+        text = tooltip_el.get_text(" ", strip=True) if tooltip_el else (td.get("aria-label") or "")
+        if re.search(r"\bno contributions?\b", text, re.I):
             count = 0
         else:
-            m = re.match(r"(\d+)", text)
-            count = int(m.group(1)) if m else 0
-        days.append({"date": date, "count": count, "level": int(td.get("data-level") or 0)})
+            m = re.search(r"(\d[\d,]*)\s+contributions?\b", text, re.I)
+            if not m:
+                raise ValueError(f"Cannot parse contributions tooltip for {date}: {text!r}")
+            count = int(m.group(1).replace(",", ""))
+        level = int(td.get("data-level") or 0)
+        if not 0 <= level <= 4:
+            raise ValueError(f"Unexpected contribution level for {date}: {level}")
+        days.append({"date": date, "count": count, "level": level})
 
     days.sort(key=lambda d: d["date"])
+    if not days:
+        raise ValueError("No dated GitHub contribution cells found")
+    if len({d["date"] for d in days}) != len(days):
+        raise ValueError("Duplicate contribution dates found")
     return days
 
 
@@ -99,7 +109,7 @@ def build_data(days):
 
     return {
         "username": USERNAME,
-        "generated_at": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "range": {"start": days[0]["date"], "end": days[-1]["date"]},
         "total_contributions": total,
         "active_days": active_days,

@@ -65,12 +65,11 @@ Explored supervised detection-rule generation and validation, including static m
 
 
 
+
 <div align="center">
-  <img
-    src="./a_wide_minimalist_dark_modern_about_me_banner(1).png"
-    alt="Mike Perrella — Cybersecurity, GRC, AI Engineering and Automation"
-    width="100%"
-  />
+  <img src="./a_wide_minimalist_dark_modern_about_me_banner.png"
+       alt="Mike Perrella — Cybersecurity, GRC, AI Engineering and Automation"
+       width="100%" />
 </div>
 
 

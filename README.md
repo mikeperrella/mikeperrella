@@ -64,15 +64,15 @@ Explored supervised detection-rule generation and validation, including static m
 
 
 
-## About My Work
 
 <div align="center">
   <img
-    src="./github-banner.png"
+    src="./a_wide_minimalist_dark_modern_about_me_banner(1).png"
     alt="Mike Perrella — Cybersecurity, GRC, AI Engineering and Automation"
     width="100%"
   />
 </div>
+
 
 
 

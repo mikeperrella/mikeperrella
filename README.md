@@ -63,15 +63,17 @@ Explored supervised detection-rule generation and validation, including static m
 - **Cybersecurity Associate Intern · International Flavors & Fragrances (summer 2023)** — Supported global InfoSec work including threat analysis, phishing investigations, security awareness, and identity lifecycle processes.
 
 
-<h2>All-Time GitHub Commits</h2>
+
+## About My Work
 
 <div align="center">
   <img
-    src="https://mikeperrella-commit-counter.mikerperrella.workers.dev/flag.svg"
-    alt="Animated American flag displaying Mike Perrella's all-time GitHub commit count"
-    width="600"
+    src="./github-banner.png"
+    alt="Mike Perrella — Cybersecurity, GRC, AI Engineering and Automation"
+    width="100%"
   />
 </div>
+
 
 
 ---

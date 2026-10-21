@@ -62,13 +62,17 @@ Explored supervised detection-rule generation and validation, including static m
 - **IT Intern · Covington & Burling LLP (summer 2024)** — Enterprise IT support, troubleshooting, system checks, and 20+ tickets per week.
 - **Cybersecurity Associate Intern · International Flavors & Fragrances (summer 2023)** — Supported global InfoSec work including threat analysis, phishing investigations, security awareness, and identity lifecycle processes.
 
-## GitHub activity
+
+<h2>All-Time GitHub Commits</h2>
 
 <div align="center">
-  <img src="./contrib-heatmap.svg" alt="Animated GitHub contribution calendar from public and anonymized private activity made visible by GitHub" width="860" />
+  <img
+    src="https://mikeperrella-commit-counter.mikerperrella.workers.dev/flag.svg"
+    alt="Animated American flag displaying Mike Perrella's all-time GitHub commit count"
+    width="600"
+  />
 </div>
 
-<sub>This graph reflects activity GitHub includes in my public contribution calendar; private repositories and commit details are not displayed.</sub>
 
 ---
 
